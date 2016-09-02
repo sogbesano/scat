@@ -8,6 +8,7 @@ import scala.io._
 import com.sun.net.ssl.internal.ssl.Provider
 import javax.net.ssl._
 import com.sun.net.ssl._
+import java.util.NoSuchElementException
 
 class ServerConnection(port: Int, keystore: String, keystorePassword: String) {
 
@@ -21,7 +22,13 @@ class ServerConnection(port: Int, keystore: String, keystorePassword: String) {
     sslSocket.accept() 
   }  
   
-  def getMsg(client: Socket): String = new BufferedSource(client.getInputStream()).getLines().next()
+  def getMsg(client: Socket): String = {
+    try {
+      new BufferedSource(client.getInputStream()).getLines().next()
+      } catch {
+        case io: NoSuchElementException => "/exit"
+      }
+  }
   
   def sendMsg(client: Socket, msg: String): Unit = {
     val out = new PrintStream(client.getOutputStream())

@@ -22,8 +22,7 @@ object Client {
       case _ => true
     }
 
-
-    if (txMsg != null) {
+    if (txMsg != null & txMsg != "/exit") {
       conn.sendMsg(server, user, txMsg)
       val rxMsg = conn.getMsg(server)
       val parser = new JsonParser(rxMsg)
