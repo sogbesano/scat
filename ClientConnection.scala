@@ -34,7 +34,7 @@ class ClientConnection(host: InetAddress, port: Int) {
     s"""{"time":"${this.getTime()}","username":"$user","msg":"$msg"}"""
   }
 
-  def getTime(): String = {
+  private def getTime(): String = {
     val cal = Calendar.getInstance()
     cal.setTime(new Date())
     "(" + cal.get(Calendar.HOUR_OF_DAY) + ":" + cal.get(Calendar.MINUTE) + ":" + cal.get(Calendar.SECOND) + ")"
