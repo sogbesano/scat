@@ -23,11 +23,11 @@ class ServerConnection(port: Int, keystore: String, keystorePassword: String) {
   }  
   
   def getMsg(client: Socket): String = {
-    try {
+    //try {
       new BufferedSource(client.getInputStream()).getLines().next()
-      } catch {
-        case io: NoSuchElementException => "/exit"
-      }
+    //} catch {
+    //  case io: NoSuchElementException => "error caught"
+    //}
   }
   
   def sendMsg(client: Socket, msg: String): Unit = {
@@ -37,6 +37,5 @@ class ServerConnection(port: Int, keystore: String, keystorePassword: String) {
   }
 
   def close(client: Socket): Unit = client.close() 
-
 
 }

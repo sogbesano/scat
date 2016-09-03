@@ -14,15 +14,9 @@ object Client {
     val user = new User(StdIn.readLine())
     println("Welcome to the chat " + user.username)
     sys.addShutdownHook(this.shutdown(conn, server))
-    var running = true
-    while (running) {
+    while (true) {
     val txMsg = StdIn.readLine()
-    running = txMsg match {
-      case "/exit" => false
-      case _ => true
-    }
-
-    if (txMsg != null & txMsg != "/exit") {
+    if (txMsg != null) {
       conn.sendMsg(server, user, txMsg)
       val rxMsg = conn.getMsg(server)
       val parser = new JsonParser(rxMsg)
