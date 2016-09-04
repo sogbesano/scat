@@ -14,8 +14,14 @@ object Server {
     val sslSocket = sslFactory.createServerSocket(args(0).toInt)
     while(true) {
       val client = sslSocket.accept()
+      sys.addShutdownHook(this.shutdown(client))
       new Thread(new ServerConnection(client, args(0).toInt)).start()
     }
+  }
+
+  def shutdown(client: Socket): Unit = {
+    client.close()
+    println("Server shutting down")
   }
 
 }

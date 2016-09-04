@@ -15,7 +15,6 @@ class ServerConnection(client: Socket, port: Int) extends Runnable {
   override def run(): Unit = {
     try {
       println("Client connected")
-      sys.addShutdownHook(this.shutdown(client))
       while(true) {
         val msg = this.getMsg(client)
 	println(msg)
@@ -27,12 +26,6 @@ class ServerConnection(client: Socket, port: Int) extends Runnable {
     }
   }
 
-
-  def shutdown(client: Socket): Unit = {
-    this.close(client)
-    println("Chat server shutting down")
-  }
-
   def getMsg(client: Socket): String = {
     new BufferedSource(client.getInputStream()).getLines().next()
   }
@@ -42,7 +35,5 @@ class ServerConnection(client: Socket, port: Int) extends Runnable {
     out.println(msg)
     out.flush()
   }
-
-  def close(client: Socket): Unit = client.close() 
 
 }
