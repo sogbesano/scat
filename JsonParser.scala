@@ -10,10 +10,8 @@ class JsonParser(msg: String) {
     }
   }
 
-  def formatMsg(json: Map[String, String]): String = {
-    def getField(json: Map[String, String], field: String): String = json(field)
-    getField(json, "time") + " " + getField(json, "username") + ": " + getField(json, "msg")
-  } 
+  def formatMsg(json: Map[String, String]): String = json("time") + " " + json("username") + ":" + json("msg")
+   
 
 }
 
