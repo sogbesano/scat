@@ -10,24 +10,31 @@ import javax.net.ssl._
 import com.sun.net.ssl._
 import java.util.NoSuchElementException
 
-class ServerConnection(port: Int, keystore: String, keystorePassword: String) {
+class ServerConnection(client: Socket, port: Int) extends Runnable {
 
-  def connect(): Socket = {
-    Security.addProvider(new Provider())
-    System.setProperty("javax.net.ssl.keyStore", keystore)
-    System.setProperty("javax.net.ssl.keyStorePassword", keystorePassword)
-    //System.setProperty("javax.net.debug", "all")
-    val sslFactory = SSLServerSocketFactory.getDefault()
-    val sslSocket = sslFactory.createServerSocket(port).asInstanceOf[SSLServerSocket]
-    sslSocket.accept() 
-  }  
-  
+  override def run(): Unit = {
+    try {
+      println("Client connected")
+      sys.addShutdownHook(this.shutdown(client))
+      while(true) {
+        val msg = this.getMsg(client)
+	println(msg)
+	this.sendMsg(client, msg)
+      }	
+    } catch {
+      case io: IOException => io
+      case ioe: NoSuchElementException => ioe
+    }
+  }
+
+
+  def shutdown(client: Socket): Unit = {
+    this.close(client)
+    println("Chat server shutting down")
+  }
+
   def getMsg(client: Socket): String = {
-    //try {
-      new BufferedSource(client.getInputStream()).getLines().next()
-    //} catch {
-    //  case io: NoSuchElementException => "error caught"
-    //}
+    new BufferedSource(client.getInputStream()).getLines().next()
   }
   
   def sendMsg(client: Socket, msg: String): Unit = {

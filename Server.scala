@@ -1,29 +1,22 @@
 import java.net._
-import java.io.IOException
+import javax.net.ssl.SSLServerSocketFactory
+import java.security._
+import com.sun.net.ssl.internal.ssl.Provider
 
 object Server {
 
   def main(args: Array[String]): Unit = {
-      println("Chat server running")
-      val conn = new ServerConnection(args(0).toInt, args(1), args(2))
-      while (true) {
-        try{
-          val client = conn.connect()
-          println("Client connected")
-          sys.addShutdownHook(this.shutdown(conn, client))
-          while(true) {
-            val msg = conn.getMsg(client)
-            println(msg)
-            conn.sendMsg(client, msg)
-	    }
-	    } catch {
-              case io: IOException => io
-	      case ioe: NoSuchElementException => ioe
-	    }
-	  }
-        }
-  
-  
+    println("Chat server running")
+    Security.addProvider(new Provider())
+    System.setProperty("javax.net.ssl.keyStore", args(1))
+    System.setProperty("javax.net.ssl.keyStorePassword", args(2))
+    val sslFactory = SSLServerSocketFactory.getDefault()
+    val sslSocket = sslFactory.createServerSocket(args(0).toInt)
+    while(true) {
+      val client = sslSocket.accept()
+      new Thread(new ServerConnection(client, args(0).toInt)).start()
+    }
+  }
 
   def shutdown(conn: ServerConnection, client: Socket): Unit = {
     conn.close(client)
