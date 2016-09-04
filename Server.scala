@@ -18,10 +18,5 @@ object Server {
     }
   }
 
-  def shutdown(conn: ServerConnection, client: Socket): Unit = {
-    conn.close(client)
-    println("Chat server shutting down")
-  } 
-
 }
 
