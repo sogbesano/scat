@@ -1,13 +1,13 @@
 import scala.util.parsing.json._
+import java.lang.IllegalArgumentException
 
 class JsonParser(msg: String) {  
 
   def toJson(): Map[String, String] = {
-    val parsed = JSON.parseFull(msg) match {
-      case Some(e) => e
-      case None => println("failed to parse")
+    JSON.parseFull(msg) match {
+      case Some(e) => e.asInstanceOf[Map[String, String]]
+      case _ => throw new IllegalArgumentException
     }
-    parsed.asInstanceOf[Map[String, String]]
   }
 
   def formatMsg(json: Map[String, String]): String = {
