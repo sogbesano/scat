@@ -17,7 +17,7 @@ object Client {
     val server = sslFactory.createSocket(InetAddress.getByName(args(0)), args(1).toInt).asInstanceOf[SSLSocket]
     println("Enter a username")
     val user = new User(StdIn.readLine())
-    val conn = new ClientConnection(server, user, InetAddress.getByName(args(0)), args(1).toInt)
+    val conn = new ClientConnection(server, user)
     println("Welcome to the chat " + user.username)
     sys.addShutdownHook(this.shutdown(conn, server))
     new Thread(conn).start()
