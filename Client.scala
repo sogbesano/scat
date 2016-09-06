@@ -2,28 +2,31 @@ import java.net._
 import scala.io._
 import java.io._
 import java.security._
+import java.util.NoSuchElementException
+import javax.net.ssl.SSLSocket
+import javax.net.ssl.SSLSocketFactory
+import com.sun.net.ssl.internal.ssl.Provider
 
 object Client {
 
   var msgAcc = ""
 
   def main(args: Array[String]): Unit = {
-    val conn = new ClientConnection(InetAddress.getByName(args(0)), args(1).toInt)
-    val server = conn.connect()
+    Security.addProvider(new Provider())
+    val sslFactory = SSLSocketFactory.getDefault()
+    val server = sslFactory.createSocket(InetAddress.getByName(args(0)), args(1).toInt).asInstanceOf[SSLSocket]
     println("Enter a username")
     val user = new User(StdIn.readLine())
+    val conn = new ClientConnection(server, user, InetAddress.getByName(args(0)), args(1).toInt)
     println("Welcome to the chat " + user.username)
     sys.addShutdownHook(this.shutdown(conn, server))
+    new Thread(conn).start()
     while (true) {
-    val txMsg = StdIn.readLine()
-    if (txMsg != null) {
-      conn.sendMsg(server, user, txMsg)
       val rxMsg = conn.getMsg(server)
       val parser = new JsonParser(rxMsg)
       val formattedMsg = parser.formatMsg(parser.toJson()) 
       println(formattedMsg)
-      msgAcc = msgAcc + formattedMsg + "\n"
-      }
+      msgAcc = msgAcc + formattedMsg + "\n" 
     }
   }
  

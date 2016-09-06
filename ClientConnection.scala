@@ -13,7 +13,14 @@ import java.util.Date
 import com.sun.net.ssl.internal.ssl.Provider
 import scala.util.parsing.json._
 
-class ClientConnection(host: InetAddress, port: Int) {
+class ClientConnection(server: Socket, user: User, host: InetAddress, port: Int) extends Runnable {
+
+  override def run(): Unit = {
+     while(true) {
+       val txMsg = StdIn.readLine()
+       this.sendMsg(this.server, user, txMsg)
+     }
+  }
 
   def connect(): Socket = {
     Security.addProvider(new Provider())

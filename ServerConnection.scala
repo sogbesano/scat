@@ -10,15 +10,19 @@ import javax.net.ssl._
 import com.sun.net.ssl._
 import java.util.NoSuchElementException
 
-class ServerConnection(client: Socket, port: Int) extends Runnable {
+class ServerConnection(client: Socket, clients: List[Socket], port: Int) extends Runnable {
 
   override def run(): Unit = {
     try {
       println("Client connected")
+      println("number of clients connected = " + this.clients.length)
       while(true) {
-        val msg = this.getMsg(client)
+        val msg = this.getMsg(this.client)
 	println(msg)
-	this.sendMsg(client, msg)
+        for(i <- 0 until this.clients.length) {
+          val cli = this.clients(i)
+	  this.sendMsg(cli, msg)
+        }
       }	
     } catch {
       case io: IOException => io
@@ -30,8 +34,8 @@ class ServerConnection(client: Socket, port: Int) extends Runnable {
     new BufferedSource(client.getInputStream()).getLines().next()
   }
   
-  def sendMsg(client: Socket, msg: String): Unit = {
-    val out = new PrintStream(client.getOutputStream())
+  def sendMsg(cli: Socket, msg: String): Unit = {
+    val out = new PrintStream(cli.getOutputStream())
     out.println(msg)
     out.flush()
   }
