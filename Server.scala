@@ -19,7 +19,7 @@ object Server {
       val client = sslSocket.accept()
       println("Client connected")
       clients = client :: clients
-      println(s"Clients connected = ${clients.length}")
+      println(s"Number of clients connected = ${clients.length}")
       new Thread(new ServerConnection(client, args(0).toInt)).start()
     }
   }

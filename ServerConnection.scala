@@ -25,11 +25,11 @@ class ServerConnection(client: Socket, port: Int) extends Runnable {
     }
   }
 
-  def getMsg(client: Socket): String = {
+  private def getMsg(client: Socket): String = {
     new BufferedSource(client.getInputStream()).getLines().next()
   }
   
-  def sendMsg(cli: Socket, msg: String): Unit = {
+  private def sendMsg(cli: Socket, msg: String): Unit = {
     val out = new PrintStream(cli.getOutputStream())
     out.println(msg)
     out.flush()
