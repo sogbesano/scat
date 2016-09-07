@@ -20,12 +20,16 @@ object Client {
     println("Welcome to the chat " + user.username)
     sys.addShutdownHook(this.shutdown(conn, server))
     new Thread(conn).start()
-    while (true) {
-      val rxMsg = conn.getMsg(server)
-      val parser = new JsonParser(rxMsg)
-      val formattedMsg = parser.formatMsg(parser.toJson()) 
-      println(formattedMsg)
-      msgAcc = msgAcc + formattedMsg + "\n" 
+    try {
+      while (true) {
+        val rxMsg = conn.getMsg(server)
+        val parser = new JsonParser(rxMsg)
+        val formattedMsg = parser.formatMsg(parser.toJson()) 
+        println(formattedMsg)
+        msgAcc = msgAcc + formattedMsg + "\n"
+      }
+    } catch {
+      case io: NoSuchElementException => io 
     }
   }
  
