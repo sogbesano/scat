@@ -18,7 +18,8 @@ class ClientConnection(server: Socket, user: User) extends Runnable {
   override def run(): Unit = {
      while(true) {
        val txMsg = StdIn.readLine()
-       this.sendMsg(this.server, user, txMsg)
+       if (txMsg != null) 
+         this.sendMsg(this.server, user, txMsg)
      }
   }
 

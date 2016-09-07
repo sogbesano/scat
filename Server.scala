@@ -14,18 +14,18 @@ object Server {
     System.setProperty("javax.net.ssl.keyStorePassword", args(2))
     val sslFactory = SSLServerSocketFactory.getDefault()
     val sslSocket = sslFactory.createServerSocket(args(0).toInt)
+    sys.addShutdownHook(this.shutdown())
     while(true) {
       val client = sslSocket.accept()
+      println("Client connected")
       clients = client :: clients
-      println("number clis = " + clients.length)
-      sys.addShutdownHook(this.shutdown(client))
-      new Thread(new ServerConnection(client, clients, args(0).toInt)).start()
+      println(s"Clients connected = ${clients.length}")
+      new Thread(new ServerConnection(client, args(0).toInt)).start()
     }
   }
 
-  def shutdown(client: Socket): Unit = {
-    clients = clients.tail
-    client.close()
+  def shutdown(): Unit = {
+    clients.foreach((s: Socket) => s.close())
     println("Server shutting down")
   }
 
