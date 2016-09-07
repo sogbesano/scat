@@ -10,7 +10,7 @@ class JsonParser(msg: String) {
     }
   }
 
-  def formatMsg(json: Map[String, String]): String = s"${json("time")} ${json("username")} : ${json("msg")}"
+  def formatMsg(json: Map[String, String]): String = s"${json("time")} ${json("username")}: ${json("msg")}"
    
 
 }
