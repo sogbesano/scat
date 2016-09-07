@@ -31,6 +31,7 @@ object Client {
   }
  
   def shutdown(conn: ClientConnection, server: Socket): Unit = {
+    //send client dc flag to server
     conn.close(server)
     val fileWriter = new BufferedWriter(new FileWriter(new File("history.txt"), true))
     fileWriter.write(msgAcc) 

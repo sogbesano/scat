@@ -16,6 +16,7 @@ class ServerConnection(client: Socket, port: Int) extends Runnable {
     try {
       while(true) {
         val msg = this.getMsg(this.client)
+        //rm client from clients if msg == client dc flag
 	println(msg)
         Server.clients.foreach((cli: Socket) => this.sendMsg(cli, msg))
       }	
