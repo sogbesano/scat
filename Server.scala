@@ -9,7 +9,6 @@ object Server {
 
   def main(args: Array[String]): Unit = {
     println("Chat server running")
-    Security.addProvider(new Provider())
     System.setProperty("javax.net.ssl.keyStore", args(1))
     System.setProperty("javax.net.ssl.keyStorePassword", args(2))
     val sslFactory = SSLServerSocketFactory.getDefault()

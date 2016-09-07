@@ -12,7 +12,6 @@ object Client {
   var msgAcc = ""
 
   def main(args: Array[String]): Unit = {
-    Security.addProvider(new Provider())
     val sslFactory = SSLSocketFactory.getDefault()
     val server = sslFactory.createSocket(InetAddress.getByName(args(0)), args(1).toInt).asInstanceOf[SSLSocket]
     println("Enter a username")
