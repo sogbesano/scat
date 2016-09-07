@@ -10,7 +10,7 @@ import javax.net.ssl._
 import com.sun.net.ssl._
 import java.util.NoSuchElementException
 
-class ServerConnection(client: Socket, port: Int) extends Runnable {
+class ServerConnection(client: Socket) extends Runnable {
 
   override def run(): Unit = {
     try {

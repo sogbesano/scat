@@ -20,7 +20,7 @@ object Server {
       println("Client connected")
       clients = client :: clients
       println(s"Number of clients connected = ${clients.length}")
-      new Thread(new ServerConnection(client, args(0).toInt)).start()
+      new Thread(new ServerConnection(client)).start()
     }
   }
 
