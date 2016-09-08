@@ -18,7 +18,7 @@ object Client {
     val user = new User(StdIn.readLine())
     val conn = new ClientConnection(server, user)
     println("Welcome to the chat " + user.username)
-    sys.addShutdownHook(this.shutdown(conn, server))
+    sys.addShutdownHook(this.shutdown(server))
     new Thread(conn).start()
     try {
       while (true) {
@@ -30,12 +30,11 @@ object Client {
       }
     } catch {
       case io: NoSuchElementException => io 
-    }
+      }
   }
  
-  def shutdown(conn: ClientConnection, server: Socket): Unit = {
-    //send client dc flag to server
-    conn.close(server)
+  def shutdown(server: Socket): Unit = {
+    server.close()
     val fileWriter = new BufferedWriter(new FileWriter(new File("history.txt"), true))
     fileWriter.write(msgAcc) 
     fileWriter.close()

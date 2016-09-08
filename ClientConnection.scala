@@ -41,5 +41,4 @@ class ClientConnection(server: Socket, user: User) extends Runnable {
     "(" + cal.get(Calendar.HOUR_OF_DAY) + ":" + cal.get(Calendar.MINUTE) + ":" + cal.get(Calendar.SECOND) + ")"
   }
 
-  def close(server: Socket): Unit = server.close()
 }
