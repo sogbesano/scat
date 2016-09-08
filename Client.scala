@@ -13,7 +13,7 @@ object Client {
 
   def main(args: Array[String]): Unit = {
     val sslFactory = SSLSocketFactory.getDefault()
-    val server = sslFactory.createSocket(InetAddress.getByName(args(0)), args(1).toInt).asInstanceOf[SSLSocket]
+    val server = sslFactory.createSocket(InetAddress.getByName(args(0)), args(1).toInt)
     println("Enter a username")
     val user = new User(StdIn.readLine())
     val conn = new ClientConnection(server, user)

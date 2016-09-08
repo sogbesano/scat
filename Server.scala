@@ -1,6 +1,5 @@
 import java.net._
 import javax.net.ssl.SSLServerSocketFactory
-import java.security._
 import com.sun.net.ssl.internal.ssl.Provider
 
 object Server {
