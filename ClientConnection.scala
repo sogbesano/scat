@@ -19,16 +19,12 @@ class ClientConnection(server: Socket, user: User) extends Runnable {
      while(true) {
        val txMsg = StdIn.readLine()
        if (txMsg != null) 
-         this.sendMsg(this.server, user, txMsg)
+         ConnectionUtils.sendMsg(this.server, this.toMinifiedJson(txMsg))
      }
   }
 
-  def sendMsg(server: Socket, user: User, msg: String): Unit = {
-    new PrintStream(server.getOutputStream(), true).println(this.toMinifiedJson(user.username, msg))
-  }  
-
-  private def toMinifiedJson(user: String, msg: String): String = {
-    s"""{"time":"${this.getTime()}","username":"$user","msg":"$msg"}"""
+  private def toMinifiedJson(msg: String): String = {
+    s"""{"time":"${this.getTime()}","username":"${user.username}","msg":"$msg"}"""
   }
 
   private def getTime(): String = {

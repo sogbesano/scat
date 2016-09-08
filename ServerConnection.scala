@@ -15,13 +15,9 @@ class ServerConnection(client: Socket, uuid: String) extends Runnable {
     while(inIterator.hasNext) {
       val msg = inIterator.next()
       println(msg)
-      Server.clients.values.foreach((cli: Socket) => this.sendMsg(cli, msg))
+      Server.clients.values.foreach((cli: Socket) => ConnectionUtils.sendMsg(cli, msg))
     }
     Server.clients = Server.clients - uuid
-  }
-
-  private def sendMsg(cli: Socket, msg: String): Unit = {
-    new PrintStream(cli.getOutputStream(), true).println(msg)
   }
 
 }
