@@ -10,19 +10,18 @@ import javax.net.ssl._
 import com.sun.net.ssl._
 import java.util.NoSuchElementException
 
-class ServerConnection(client: Socket) extends Runnable {
+class ServerConnection(client: Socket, uuid: String) extends Runnable {
 
   override def run(): Unit = {
     try {
       while(true) {
         val msg = this.getMsg(this.client)
-        //rm client from clients if msg == client dc flag
 	println(msg)
-        Server.clients.foreach((cli: Socket) => this.sendMsg(cli, msg))
+        Server.clients.values.foreach((cli: Socket) => this.sendMsg(cli, msg))
       }	
     } catch {
       case io: IOException => io
-      case ioe: NoSuchElementException => ioe
+      case ioe: NoSuchElementException => Server.clients = Server.clients - uuid
     }
   }
 
