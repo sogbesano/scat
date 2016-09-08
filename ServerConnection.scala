@@ -13,21 +13,16 @@ import java.util.NoSuchElementException
 class ServerConnection(client: Socket, uuid: String) extends Runnable {
 
   override def run(): Unit = {
-    try {
-      while(true) {
-        val msg = this.getMsg(this.client)
-	println(msg)
-        Server.clients.values.foreach((cli: Socket) => this.sendMsg(cli, msg))
-      }	
-    } catch {
-      case io: IOException => io
-      case ioe: NoSuchElementException => Server.clients = Server.clients - uuid
+    val inIterator = this.getInputIterator(this.client)
+    while(inIterator.hasNext) {
+      val msg = inIterator.next()
+      println(msg)
+      Server.clients.values.foreach((cli: Socket) => this.sendMsg(cli, msg))
     }
+    Server.clients = Server.clients - uuid
   }
 
-  private def getMsg(client: Socket): String = {
-    new BufferedSource(client.getInputStream()).getLines().next()
-  }
+  def getInputIterator(client: Socket): Iterator[String] = new BufferedSource(client.getInputStream()).getLines()
   
   private def sendMsg(cli: Socket, msg: String): Unit = {
     new PrintStream(cli.getOutputStream(), true).println(msg)
