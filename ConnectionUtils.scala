@@ -3,6 +3,6 @@ import scala.io.BufferedSource
 
 object ConnectionUtils {
   
-  def getInputIterator(server: Socket): Iterator[String] = new BufferedSource(server.getInputStream()).getLines()
+  def getInputIterator(socket: Socket): Iterator[String] = new BufferedSource(socket.getInputStream()).getLines()
 
 }
