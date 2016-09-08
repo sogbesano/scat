@@ -19,7 +19,7 @@ class ClientConnection(server: Socket, user: User) extends Runnable {
      while(true) {
        StdIn.readLine() match {
          case txMsg if txMsg == "/exit" || txMsg == null => System.exit(0)
-         case _ => ConnectionUtils.sendMsg(this.server, this.toMinifiedJson(txMsg))
+         case txMsg => ConnectionUtils.sendMsg(this.server, this.toMinifiedJson(txMsg))
        } 
      }
   }
