@@ -16,3 +16,6 @@ ClientConnection.class
 Client.class
 JsonParser.scala~
 JsonParser.class
+ConnectionUtils$.class
+ConnectionUtils.scala~
+ConnectionUtils.class
