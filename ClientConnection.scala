@@ -26,9 +26,7 @@ class ClientConnection(server: Socket, user: User) extends Runnable {
   def getMsg(server: Socket): String = new BufferedSource(server.getInputStream()).getLines().next()
 
   def sendMsg(server: Socket, user: User, msg: String): Unit = {
-    val out = new PrintStream(server.getOutputStream())
-    out.println(this.toMinifiedJson(user.username, msg))
-    out.flush()
+    new PrintStream(server.getOutputStream(), true).println(this.toMinifiedJson(user.username, msg))
   }  
 
   private def toMinifiedJson(user: String, msg: String): String = {

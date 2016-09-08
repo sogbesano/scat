@@ -31,9 +31,7 @@ class ServerConnection(client: Socket) extends Runnable {
   }
   
   private def sendMsg(cli: Socket, msg: String): Unit = {
-    val out = new PrintStream(cli.getOutputStream())
-    out.println(msg)
-    out.flush()
+    new PrintStream(cli.getOutputStream(), true).println(msg)
   }
 
 }
