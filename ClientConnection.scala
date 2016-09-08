@@ -17,11 +17,10 @@ class ClientConnection(server: Socket, user: User) extends Runnable {
 
   override def run(): Unit = {
      while(true) {
-       val txMsg = StdIn.readLine()
-       if (txMsg == "/exit")
-         System.exit(0)
-       else if (txMsg != null) 
-         ConnectionUtils.sendMsg(this.server, this.toMinifiedJson(txMsg))
+       StdIn.readLine() match {
+         case txMsg if txMsg == "/exit" || txMsg == null => System.exit(0)
+         case _ => ConnectionUtils.sendMsg(this.server, this.toMinifiedJson(txMsg))
+       } 
      }
   }
 
